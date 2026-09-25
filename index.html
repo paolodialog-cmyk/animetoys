@@ -32,10 +32,25 @@ img{max-width:100%;display:block}
 /* fascia anteprima */
 .preview{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;background:#FFD21F;color:#111114;font:700 13px/1.3 var(--body);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 18px;padding:7px 16px;border-bottom:2px solid #111114}
 .preview b{letter-spacing:.02em}
-.palbox{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.palbox button{font:700 12px var(--body);border:2px solid #111114;background:#fff;color:#111114;border-radius:999px;padding:3px 10px 3px 6px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
-.palbox button[aria-pressed="true"]{background:#111114;color:#FFD21F}
-.palbox i{width:14px;height:14px;border-radius:50%;display:inline-block;border:1px solid #111114}
+.palsw{display:flex;gap:6px;align-items:center}
+.palsw button{width:30px;height:30px;border-radius:50%;border:2px solid var(--onHead);padding:2px;background:transparent;cursor:pointer;display:grid;place-items:center;opacity:.7;transition:transform .15s,opacity .15s}
+.palsw button:hover{opacity:1;transform:scale(1.08)}
+.palsw button[aria-pressed="true"]{opacity:1;outline:2px solid var(--hi);outline-offset:2px}
+.palsw i{width:100%;height:100%;border-radius:50%;display:block}
+/* scelta stile in home */
+.styles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stylecard{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-rows:auto auto;border:4px solid var(--line);background:var(--bg);transition:transform .15s}
+.stylecard:hover{transform:translate(-3px,-3px)}
+.stylecard:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.stylecard .sw{display:grid;grid-template-columns:2fr 1fr 1fr;height:92px;border-bottom:4px solid var(--line)}
+.stylecard .sw span{display:block}
+.stylecard .sw .big{display:grid;place-items:center;font:400 30px var(--display)}
+.stylecard .tx{padding:14px 16px;display:grid;gap:4px}
+.stylecard .tx b{font:400 20px var(--display)}
+.stylecard .tx small{font-size:14px;color:var(--muted);line-height:1.45}
+.stylecard .tx em{font-style:normal;font:700 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.stylecard[aria-pressed="true"]{background:var(--paper)}
+.stylecard[aria-pressed="false"] .tx em{visibility:hidden}
 
 /* header */
 header.top{position:sticky;top:calc(env(safe-area-inset-top,0px) + 34px);z-index:50;background:var(--head);color:var(--onHead);border-bottom:4px solid var(--accent)}
@@ -216,6 +231,7 @@ footer .legal{margin-top:28px;padding-top:16px;border-top:1px solid rgba(255,255
 .note{font-size:12px;color:var(--muted);margin-top:14px}
 
 @media (max-width:900px){
+  .styles{grid-template-columns:1fr 1fr}
   .hero .grid,.shopgrid,.findgrid,.sala{grid-template-columns:1fr}
   .sala .intro{position:static}
   .trio,.formats{grid-template-columns:1fr}
@@ -244,12 +260,6 @@ footer .legal{margin-top:28px;padding-top:16px;border-top:1px solid rgba(255,255
 
 <div class="preview" role="note">
   <span><b>Anteprima di proposta — non è il sito ufficiale</b> · Animetoys Milano</span>
-  <span class="palbox" id="palbox">Palette:
-    <button type="button" data-p="manga" aria-pressed="true"><i style="background:linear-gradient(90deg,#fff 50%,#E3242B 50%)"></i>Manga</button>
-    <button type="button" data-p="gunpla" aria-pressed="false"><i style="background:linear-gradient(90deg,#1F4FA3 50%,#FFD21F 50%)"></i>Gunpla</button>
-    <button type="button" data-p="museo" aria-pressed="false"><i style="background:linear-gradient(90deg,#EEECE7 50%,#9A6B25 50%)"></i>Museo</button>
-    <button type="button" data-p="notte" aria-pressed="false"><i style="background:linear-gradient(90deg,#0F1829 50%,#F2C230 50%)"></i>Notte</button>
-  </span>
 </div>
 
 <header class="top">
@@ -261,6 +271,12 @@ footer .legal{margin-top:28px;padding-top:16px;border-top:1px solid rgba(255,255
       <a href="#trovarci" data-r="trovarci">Come trovarci</a>
       <a class="shop" href="https://animetoys.it/" target="_blank" rel="noopener">Shop online ↗</a>
     </nav>
+    <div class="palsw" role="group" aria-label="Stile del sito">
+      <button type="button" data-p="manga" title="Stile Manga" aria-label="Stile Manga"><i style="background:linear-gradient(135deg,#fff 50%,#E3242B 50%)"></i></button>
+      <button type="button" data-p="gunpla" title="Stile Gunpla" aria-label="Stile Gunpla"><i style="background:linear-gradient(135deg,#1F4FA3 50%,#FFD21F 50%)"></i></button>
+      <button type="button" data-p="museo" title="Stile Museo" aria-label="Stile Museo"><i style="background:linear-gradient(135deg,#EEECE7 50%,#9A6B25 50%)"></i></button>
+      <button type="button" data-p="notte" title="Stile Notte" aria-label="Stile Notte"><i style="background:linear-gradient(135deg,#0F1829 50%,#F2C230 50%)"></i></button>
+    </div>
   </div>
 </header>
 
@@ -313,6 +329,12 @@ const piece = p => `<a class="piece" href="${esc(p.url)}" target="_blank" rel="n
   <div class="ph"><img src="${p.src}" alt="${esc(cleanTitle(p.title))}"></div>
   <div class="meta"><span>${esc(brand(p.title))}</span><b>${esc(cleanTitle(p.title))}</b><em>Vedi nello shop ↗</em></div></a>`;
 
+const STYLES = [
+  {k:'manga', n:'Manga', j:'漫', c:['#FFFFFF','#E3242B','#111114'], d:'Bianco, nero e rosso, come una tavola a fumetti.'},
+  {k:'gunpla', n:'Gunpla', j:'G', c:['#1F4FA3','#FFD21F','#D7282F'], d:'Blu, giallo e rosso dei mobile suit.'},
+  {k:'museo', n:'Museo', j:'館', c:['#EEECE7','#9A6B25','#6E2F2A'], d:'Sabbia e bronzo, luci da esposizione.'},
+  {k:'notte', n:'Notte', j:'夜', c:['#0F1829','#F2C230','#E4553F'], d:'Blu notte e oro, per le serate evento.'}
+];
 const SALE = [
   {k:'robot', t:"Robot anni '70 e '80", d:"Goldrake, Mazinga, Jeeg Robot d'acciaio e i giganti che hanno riempito i pomeriggi davanti alla TV. La sala dei ricordi d'infanzia."},
   {k:'zodiaco', t:'Cavalieri dello Zodiaco', d:"Armature d'oro e di bronzo, Myth Cloth e statue in scala: Pegasus, Dragone, Atena e i Cavalieri d'oro."},
@@ -340,6 +362,18 @@ home(){
         ${h.map(p=>`<div class="pn"><img src="${p.src}" alt="${esc(cleanTitle(p.title))}"><span class="cap">${esc(brand(p.title))}</span></div>`).join('')}
       </div>
       <span class="sfx" aria-hidden="true">ドン!</span>
+    </div>
+  </section>
+
+  <section class="sec band tone" id="stili">
+    <div class="wrap">
+      <div class="sechead"><div><span class="eyebrow">Il sito come lo vuoi tu</span><h2>Scegli il tuo stile</h2></div><p class="lead" style="margin:0;max-width:44ch">Quattro palette ispirate al negozio. Cambiala quando vuoi, anche dai pallini in alto: il sito la ricorda alla prossima visita.</p></div>
+      <div class="styles">${STYLES.map(s=>`
+        <button type="button" class="stylecard" data-p="${s.k}">
+          <span class="sw"><span class="big" style="background:${s.c[0]};color:${s.c[1]}">${s.j}</span><span style="background:${s.c[1]}"></span><span style="background:${s.c[2]}"></span></span>
+          <span class="tx"><b>${s.n}</b><small>${s.d}</small><em>In uso</em></span>
+        </button>`).join('')}
+      </div>
     </div>
   </section>
 
@@ -496,6 +530,7 @@ function render(){
   const r = (location.hash||'').replace('#','');
   const route = ROUTES.includes(r) ? r : 'home';
   $('#app').innerHTML = pages[route]();
+  const cur=document.body.dataset.pal||'manga'; document.querySelectorAll('[data-p]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.p===cur));
   document.querySelectorAll('nav.main a[data-r]').forEach(a=>{ if(a.dataset.r===route) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
   window.scrollTo(0,0);
 }
@@ -508,10 +543,10 @@ document.addEventListener('click', e=>{
 
 function setPal(p){
   document.body.dataset.pal = p;
-  document.querySelectorAll('#palbox button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.p===p));
+  document.querySelectorAll('[data-p]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.p===p));
   try{ localStorage.setItem('at-pal', p); }catch(e){}
 }
-document.getElementById('palbox').addEventListener('click', e=>{ const b=e.target.closest('button'); if(b) setPal(b.dataset.p); });
+document.addEventListener('click', e=>{ const b=e.target.closest('[data-p]'); if(b) setPal(b.dataset.p); });
 let saved='manga'; try{ saved = localStorage.getItem('at-pal') || 'manga'; }catch(e){}
 setPal(saved);
 render();
